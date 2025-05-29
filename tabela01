@@ -1,4 +1,4 @@
-REATE TABLE Pessoa(
+CREATE TABLE Pessoa(
 CPF			varchar(20) PRIMARY KEY,
  	nome			varchar(100),
  	data_nasc		varchar(20),

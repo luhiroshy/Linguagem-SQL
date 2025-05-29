@@ -1,0 +1,138 @@
+CREATE TABLE Enfermeiro(
+COREN		varchar(15) PRIMARY KEY,
+ 	nome			varchar(100),
+ 	data_nasc		varchar(10)
+);
+
+CREATE TABLE AreaE(
+ID_area		int PRIMARY KEY,
+ 	COREN		varchar(15),
+ 	area			varchar(100),
+FOREIGN KEY (COREN) REFERENCES Enfermeiro(COREN)
+);
+
+CREATE TABLE ContatoE(
+ID_contato		int PRIMARY KEY,
+ 	COREN		varchar(15),
+ 	telefone		varchar(30),
+email			varchar(30),
+FOREIGN KEY (COREN) REFERENCES Enfermeiro(COREN)
+);
+
+CREATE TABLE Paciente(
+CPF			varchar(15) PRIMARY KEY,
+ 	nome			varchar(100),
+ 	data_nasc		varchar(10),
+	endereco 		varchar(100)
+);
+
+CREATE TABLE ContatoP(
+ID_contatop		int PRIMARY KEY,
+ 	CPF			varchar(15),
+ 	telefone		varchar(30),
+email			varchar(30),
+FOREIGN KEY (CPF) REFERENCES Enfermeiro(CPF)
+);
+
+CREATE TABLE Trata(
+ID_trata			int PRIMARY KEY,
+COREN			varchar(15),
+CPF				varchar(15),
+FOREIGN KEY (COREN) REFERENCES Enfermeiro(COREN),
+FOREIGN KEY (CPF) REFERENCES Paciente(CPF)
+);
+
+CREATE TABLE Medico(
+CMR		varchar(15) PRIMARY KEY,
+ 	nome			varchar(100),
+ 	data_nasc		varchar(10)
+);
+
+CREATE TABLE AreaM(
+ID_aream		int PRIMARY KEY,
+ 	CMR			varchar(15),
+ 	area			varchar(100),
+FOREIGN KEY (CMR) REFERENCES Medico(CMR)
+);
+
+CREATE TABLE ContatoM(
+ID_contatom		int PRIMARY KEY,
+ 	CMR			varchar(15),
+ 	telefone		varchar(30),
+email			varchar(30),
+FOREIGN KEY (CMR) REFERENCES Medico(CMR)
+);
+
+CREATE TABLE Auxilia(
+ID_auxilia			int PRIMARY KEY,
+COREN			varchar(15),
+CMR				varchar(15),
+FOREIGN KEY (COREN) REFERENCES Enfermeiro(COREN),
+FOREIGN KEY (CMR) REFERENCES medico(CMR)
+);
+
+CREATE TABLE Consulta(
+ID_consulta		int PRIMARY KEY,
+ 	data_hora		varchar(16),
+ 	motivo			varchar(100)
+);
+
+CREATE TABLE Cumpri(
+ID_cumpri			int PRIMARY KEY,
+CPF				varchar(15),
+ID_consulta			int,
+FOREIGN KEY (CPF) REFERENCES Paciente(CPF),
+FOREIGN KEY (ID_consulta) REFERENCES consulta(ID_consulta)
+);
+
+CREATE TABLE Realiza(
+ID_cumpri			int PRIMARY KEY,
+CMR				varchar(15),
+ID_consulta			int,
+FOREIGN KEY (CMR) REFERENCES Medico(CMR),
+FOREIGN KEY (ID_consulta) REFERENCES consulta(ID_consulta)
+);
+
+CREATE TABLE Exame(
+ID_exame			int PRIMARY KEY,
+ 	data_hora			varchar(16),
+ 	resultado			varchar(100)
+);
+
+CREATE TABLE Faz(
+ID_faz				int PRIMARY KEY,
+CPF				varchar(15),
+ID_exame			int,
+FOREIGN KEY (CPF) REFERENCES Paciente(CPF),
+FOREIGN KEY (ID_exame) REFERENCES exame(ID_exame)
+);
+
+CREATE TABLE Executa(
+ID_executa			int PRIMARY KEY,
+CMR				varchar(15),
+ID_exame			int,
+FOREIGN KEY (CMR) REFERENCES Medico(CMR),
+FOREIGN KEY (ID_exame) REFERENCES exame(ID_exame)
+);
+
+CREATE TABLE Receita(
+ID_receita		int PRIMARY KEY,
+ 	pescricao		varchar(100),
+ 	motivo			varchar(100)
+);
+
+CREATE TABLE Recebe(
+ID_recebe			int PRIMARY KEY,
+CPF				varchar(15),
+ID_receita			int,
+FOREIGN KEY (CPF) REFERENCES Paciente(CPF),
+FOREIGN KEY (ID_receita) REFERENCES receita(ID_receita)
+);
+
+CREATE TABLE Entrega(
+ID_recebe			int PRIMARY KEY,
+CMR				varchar(15),
+ID_receita			int,
+FOREIGN KEY (CMR) REFERENCES Medico(CMR),
+FOREIGN KEY (ID_receita) REFERENCES receita(ID_receita)
+)

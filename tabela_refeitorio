@@ -1,0 +1,121 @@
+drop table Customers;
+drop table Shippings;
+drop table Orders;
+
+CREATE TABLE Funcionario(
+  CPF_Fun   		 VARCHAR(14) PRIMARY KEY,
+  nome           		 VARCHAR(100),
+  Endereço          		 VARCHAR(50)
+);
+
+ALTER TABLE Funcionario add Função VARCHAR(50);
+
+CREATE TABLE Contato(
+  ID_Contato   		 int PRIMARY KEY,
+  CPF_Fun          		 VARCHAR(14),
+  celular           		 VARCHAR(20),
+  email          		 VARCHAR(50),
+FOREIGN KEY (CPF_Fun) REFERENCES Funcionario(CPF_Fun)
+);
+
+ALTER TABLE Contato add telefone VARCHAR(20);
+
+CREATE TABLE Cliente(
+  CPF_Cliente   		 VARCHAR(14) PRIMARY KEY,
+  CPF_Fun          		 VARCHAR(14),
+  nome           		 VARCHAR(100),
+  data		          		 VARCHAR(10),
+FOREIGN KEY (CPF_Fun) REFERENCES Funcionario(CPF_Fun)
+);
+
+CREATE TABLE Pedido(
+  ID_Pedido   		 int PRIMARY KEY,
+  nome          		 VARCHAR(100),
+  preço	       		 VARCHAR(50),
+  obs		       		 VARCHAR(50)
+);
+
+ALTER TABLE Cliente add hora VARCHAR(5);
+
+CREATE TABLE Estoque(
+  ID_Estoque   		 int PRIMARY KEY,
+  ID_Pedido   		 int,
+  fileira          		 VARCHAR(10),
+  quantidade       		int,
+  data		          		 VARCHAR(10),
+FOREIGN KEY (ID_Pedido) REFERENCES Pedido(ID_Pedido)
+);
+
+ALTER TABLE Estoque add hora VARCHAR(5);
+
+CREATE TABLE Realiza(
+ ID_Realiza  		 int PRIMARY KEY, 
+ CPF_Cliente   		 VARCHAR(14),
+ ID_Pedido   		 int,
+FOREIGN KEY (CPF_Cliente) REFERENCES Cliente(CPF_Cliente),
+FOREIGN KEY (ID_Pedido) REFERENCES Pedido(ID_Pedido)
+);
+
+CREATE TABLE Fornecedora(
+  CNPJ	   		 VARCHAR(14) PRIMARY KEY,
+  nome           		 VARCHAR(100),
+  Endereço          		 VARCHAR(50)
+);
+
+CREATE TABLE Contato_For(
+  ID_Contato_For   	 int PRIMARY KEY,
+  CNPJ          		 VARCHAR(14),
+  celular           		 VARCHAR(20),
+  email          		 VARCHAR(50),
+ telefone          		 VARCHAR(20),
+FOREIGN KEY (CNPJ) REFERENCES Fornecedora(CNPJ)
+);
+
+CREATE TABLE Abastece(
+ ID_Abastece		 int PRIMARY KEY, 
+ CNPJ   			 VARCHAR(14),
+ ID_Estoque   		 int,
+FOREIGN KEY (CNPJ) REFERENCES Fornecedora(CNPJ),
+FOREIGN KEY (ID_Estoque) REFERENCES Estoque(ID_Estoque)
+);
+
+INSERT INTO Funcionario VALUES ("98765432112345", "Amanda Ferraz", "Rua joão de barros, 607 ", "Atendente" );
+INSERT INTO Funcionario VALUES ("65434567834214", "Ronaldo Silva", "Rua do sol, 699 ", "Cozinheiro" );
+INSERT INTO Contato VALUES ("8765", "98765432112345", "81 97865-6789",  "Amanda.ferraz@gmail.com", "81 8975-6443" );
+INSERT INTO Contato VALUES ("5367", "65434567834214", "81 95463-5679",  "Ronaldo.silvinha@gmail.com", "81 6566-8775" );
+INSERT INTO Cliente VALUES ("78654321908976", "98765432112345", "Alberto João ", "10/04/2025", "12:15");
+INSERT INTO Cliente VALUES ("8765435678876", "98765432112345", "Jonas tenio", "27/03/2025", "17:09");
+INSERT INTO Cliente VALUES ("76473562718934", "98765432112345", "Jonnio", "13/03/2025", "17:50");
+INSERT INTO Cliente VALUES ("74563627816453", "98765432112345", "Joana dacota", "29/04/2025", "11:49");
+INSERT INTO Cliente VALUES ("97058234561234", "98765432112345", "Lidia", "27/03/2025", "13:06");
+INSERT INTO Pedido VALUES ("7930", "sanduíche", "R$ 2,00", "sem verduras");
+INSERT INTO Pedido VALUES ("7389", "suco de maracujá", "R$ 7,00", "sem açúcar");
+INSERT INTO Estoque VALUES ("6453","7930", "1°", "20", "10/04/2025", "12:15");
+INSERT INTO Estoque VALUES ("6548","7389", "3°", "12", "10/04/2025", "12:15");
+INSERT INTO Realiza VALUES ("7453", "78654321908976", "7930");
+INSERT INTO Realiza VALUES ("6545", "8765435678876", "7389");
+INSERT INTO Fornecedora VALUES ("65437281763542", "salgados.xinhas", "Rua do sal, 987");
+INSERT INTO Fornecedora VALUES ("65432678654321", "Sucosdoces", "Rua do açúcar, 607");
+INSERT INTO Contato_For VALUES ("6453", "65437281763542", "81 96574-5679",  "salgados.xinhas@gmail.com", "81 6574-4888" );
+INSERT INTO Contato_For VALUES ("9039", "65432678654321", "81 95453-8699",  "Sucosdoces09@gmail.com", "81 6578-3848" );
+INSERT INTO Abastece VALUES ("7865", "65437281763542", "6453");
+INSERT INTO Abastece VALUES ("6574", "65432678654321", "6548");
+
+UPDATE Pedido SET preço = "R$ 3,00" WHERE  ID_Pedido = 7930;
+UPDATE Pedido SET preço = "R$ 8,00" WHERE  ID_Pedido = 7389;
+UPDATE Funcionario SET Endereço = "Rua do sol, 690" WHERE  CPF_Fun = 65434567834214;
+
+DELETE FROM Cliente WHERE CPF_Cliente = 76473562718934;
+DELETE FROM Cliente WHERE CPF_Cliente = 74563627816453;
+DELETE FROM Cliente WHERE CPF_Cliente = 97058234561234;
+
+SELECT * FROM Funcionario;
+SELECT * FROM Contato;
+SELECT * FROM Cliente;
+SELECT * FROM Pedido;
+SELECT fileira FROM Estoque;
+SELECT CPF_Cliente FROM Realiza;
+SELECT nome FROM Fornecedora WHERE nome = "salgados.xinhas";
+SELECT email FROM Contato_For WHERE email = "Sucosdoces09@gmail.com";
+SELECT nome FROM Cliente WHERE CPF_Fun LIKE "%8%";
+SELECT preço FROM Pedido WHERE preço LIKE "%0%";

@@ -1,0 +1,8 @@
+REATE TABLE Pessoa(
+CPF			varchar(20) PRIMARY KEY,
+ 	nome			varchar(100),
+ 	data_nasc		varchar(20),
+sexo			varchar(20),
+telefone		varchar(20),
+tipo_sang		varchar(4)
+);
